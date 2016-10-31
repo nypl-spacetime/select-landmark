@@ -5,8 +5,12 @@ body {
   margin: 0 auto;
 }
 
-body, input {
-  font-size: 25px;
+h1 {
+  font-size: 40px;
+}
+
+body, input, button {
+  font-size: 16px;
   font-family: monospace;
 }
 
@@ -26,12 +30,13 @@ h1 {
   margin: .2em 0;
 }
 
-input {
-  width: 100%;
+form {
+  display: flex;
 }
 
 .text {
-  font-size: 60%;
+  margin: 1em 0;
+  /*font-size: 60%;*/
 }
 
 #error span {
@@ -44,22 +49,45 @@ input {
 
 #image {
   width: 100%;
-  height: 600px;
+  height: 500px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
 }
 
-#title {
+#title, #submit {
   padding: .3em .5em;
   margin-bottom: 1em;
-  background-color: white;
   border-radius: 5px;
   border-style: solid;
   border-width: 2px;
   border-color: #999;
 }
 
+#title {
+  width: 100%;
+  background-color: white;
+  margin-right: 1em;
+}
+
+#submit {
+  border-color: #ffbd00;
+  background-color: white;
+  cursor: pointer;
+}
+
+span.selected {
+  padding: 2px 3px;
+  margin-left: -2px;
+  margin-right: -2px;
+}
+
+.selected,
+#submit:hover,
 #title::selection {
-  background: #FFBD00;
+  background-color: #ffbd00;
+}
+
+#examples li {
+  margin-bottom: 0.5em;
 }
