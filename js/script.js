@@ -1,5 +1,5 @@
-var API_URL = 'http://brick-by-brick.dev/'
-// var API_URL = 'http://brick-by-brick.herokuapp.com/'
+// var API_URL = 'http://brick-by-brick.dev/'
+var API_URL = 'http://brick-by-brick.herokuapp.com/'
 var TASK = 'select-toponym'
 
 var item = {}
@@ -131,8 +131,6 @@ function loadItem() {
 function submit() {
   var toponym = titleElement.value
     .substring(titleElement.selectionStart, titleElement.selectionEnd).trim()
-
-  console.log('submit', toponym)
 
   var url = `${API_URL}items/${item.provider}/${item.id}`
   var skipped = (toponym.length === 0)
