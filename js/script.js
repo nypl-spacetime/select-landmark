@@ -50,6 +50,10 @@ var examples = [
   ]
 ]
 
+var collections = [
+  '812e5770-c60c-012f-7167-58d385a7bc34'
+]
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response
@@ -139,7 +143,11 @@ function loadItem() {
   titleElement.focus()
   // TODO: clear selection!
 
-  const url = `${API_URL}tasks/${TASK_ID}/items/random`
+  var url = `${API_URL}tasks/${TASK_ID}/items/random`
+  if (collections && collections.length) {
+    url += `?collection=${collections.join(',')}`
+  }
+
   getJSON(url, (err, nextItem) => {
     if (!nextItem || err) {
       setError(err)
@@ -154,7 +162,8 @@ function loadItem() {
     d3.select('#title')
       .attr('value', title)
 
-    d3.select('#image')
+    d3.select('#image a')
+      .attr('href', item.data.url)
       .style('background-image', 'url(' + src + ')')
   })
 }
