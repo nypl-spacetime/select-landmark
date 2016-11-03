@@ -1,22 +1,53 @@
 // var API_URL = 'http://brick-by-brick.dev/'
 var API_URL = 'http://brick-by-brick.herokuapp.com/'
-var TASK = 'select-toponym'
+var TASK_ID = 'select-toponym'
 
 var item = {}
 var titleElement = document.getElementById('title')
 
 var examples = [
-  ['Wanamaker\'s Department Store', 'Wanamaker\'s Department Store: Broadway and 9th Street'],
-  [null, 'Broadway, East Side. Bowling Green to Hudson Bldg.'],
-  ['Castle Garden', 'Castle Garden, New York. From the Battery. 624'],
-  ['Richmond Borough National Bank', 'Richmond Borough National Bank, Stapleton, Staten Island, N.Y.'],
-  [null, 'L\'Arrive du Prince Quillaume Henry a Nouvelle York'],
-  ['City Hall Park', 'At left, corner of City Hall Park . . . At right, street with church beyond.'],
-  [null, 'Stores corner of Broadway and Rector Street'],
-  ['Bay and Harbour of New-York', 'View of the Bay and Harbour of New-York, from the Battery'],
-  ['Lyon Castle', 'Lyon Castle, Rossville, Staten Island, N.Y.'],
-  [null, 'A plan of the city and environs of New York in North America.'],
-  ['Trinity Church', 'Trinity Church']
+  [
+    'Wanamaker\'s Department Store',
+    'Wanamaker\'s Department Store: Broadway and 9th Street'
+  ],
+  [
+    null,
+    'Broadway, East Side. Bowling Green to Hudson Bldg.'
+  ],
+  [
+    'Castle Garden', 'Castle Garden, New York. From the Battery. 624'],
+  [
+    'Richmond Borough National Bank',
+    'Richmond Borough National Bank, Stapleton, Staten Island, N.Y.'
+  ],
+  [
+    null,
+    'L\'Arrive du Prince Quillaume Henry a Nouvelle York'
+  ],
+  [
+    'City Hall Park',
+    'At left, corner of City Hall Park . . . At right, street with church beyond.'
+  ],
+  [
+    null,
+    'Stores corner of Broadway and Rector Street'
+  ],
+  [
+    'Bay and Harbour of New-York',
+    'View of the Bay and Harbour of New-York, from the Battery'
+  ],
+  [
+    'Lyon Castle',
+    'Lyon Castle, Rossville, Staten Island, N.Y.'
+  ],
+  [
+    null,
+    'A plan of the city and environs of New York in North America.'
+  ],
+  [
+    'Trinity Church',
+    'Trinity Church'
+  ]
 ]
 
 function checkStatus(response) {
@@ -108,7 +139,7 @@ function loadItem() {
   titleElement.focus()
   // TODO: clear selection!
 
-  const url = `${API_URL}tasks/${TASK}/items/random`
+  const url = `${API_URL}tasks/${TASK_ID}/items/random`
   getJSON(url, (err, nextItem) => {
     if (!nextItem || err) {
       setError(err)
@@ -132,11 +163,11 @@ function submit() {
   var toponym = titleElement.value
     .substring(titleElement.selectionStart, titleElement.selectionEnd).trim()
 
-  var url = `${API_URL}items/${item.provider}/${item.id}`
+  var url = `${API_URL}items/${item.organization.id}/${item.id}`
   var skipped = (toponym.length === 0)
 
   var body = {
-    task: TASK
+    taskId: TASK_ID
   }
 
   if (skipped) {
