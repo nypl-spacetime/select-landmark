@@ -1,5 +1,7 @@
-var API_URL = 'http://brick-by-brick.herokuapp.com/'
-var API_URL = 'http://brick-by-brick.dev/'
+---
+---
+
+var API_URL = '{{ site.api-url }}'
 var TASK_ID = 'select-toponym'
 
 var item = {}
