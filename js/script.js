@@ -1,9 +1,21 @@
-// var API_URL = 'http://brick-by-brick.dev/'
 var API_URL = 'http://brick-by-brick.herokuapp.com/'
+var API_URL = 'http://brick-by-brick.dev/'
 var TASK_ID = 'select-toponym'
 
 var item = {}
 var titleElement = document.getElementById('title')
+
+
+var collections = [
+  '812e5770-c60c-012f-7167-58d385a7bc34'
+]
+
+var elements = {
+  error: document.getElementById('error'),
+  oauth: document.getElementById('oauth')
+}
+
+var brickByBrick = BrickByBrick(API_URL, TASK_ID, collections, elements)
 
 var examples = [
   [
@@ -50,61 +62,15 @@ var examples = [
   ]
 ]
 
-var collections = [
-  '812e5770-c60c-012f-7167-58d385a7bc34'
-]
-
-function checkStatus(response) {
-  if (response.status >= 200 && response.status < 300) {
-    return response
-  } else {
-    var error = new Error(response.statusText)
-    error.response = response
-    error.status = response.status
-    throw error
-  }
-}
-
-function parseJSON(response) {
-  return response.json()
-}
-
-function postJSON(url, data, callback) {
-  fetch(url, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  })
-    .then(checkStatus)
-    .then(parseJSON)
-    .then(function(data) {
-      callback(null, data)
-    }).catch(callback)
-}
-
-function getJSON(url, callback) {
-  fetch(url, {
-    credentials: 'include'
-  })
-    .then(checkStatus)
-    .then(parseJSON)
-    .then(function(data) {
-      callback(null, data)
-    }).catch(callback)
-}
-
 function formSubmit(event) {
   event.preventDefault()
   submit()
   return false
 }
+
 document.getElementById('form').addEventListener('submit', function (event) {
-  submit()
   event.preventDefault()
+  submit()
 })
 
 titleElement.addEventListener('keydown', function (event) {
@@ -136,6 +102,7 @@ function setError(err) {
     message = 'Error getting task from server'
   }
 
+  d3.select('#error > *').remove()
   d3.select('#error').append('span').html(message)
 }
 
@@ -143,57 +110,50 @@ function loadItem() {
   titleElement.focus()
   // TODO: clear selection!
 
-  var url = `${API_URL}tasks/${TASK_ID}/items/random`
-  if (collections && collections.length) {
-    url += `?collection=${collections.join(',')}`
-  }
+  brickByBrick.getItem()
+    .then(function (nextItem) {
+      d3.select('article')
+        .classed('hidden', false)
 
-  getJSON(url, (err, nextItem) => {
-    if (!nextItem || err) {
-      setError(err)
-      return
-    }
+      item = nextItem
 
-    item = nextItem
+      var title = item.data.title
+      var src = item.data.image_urls[0].url
 
-    var title = item.data.title
-    var src = item.data.image_urls[0].url
+      d3.select('#title')
+        .attr('value', title)
 
-    d3.select('#title')
-      .attr('value', title)
-
-    d3.select('#image a')
-      .attr('href', item.data.url)
-      .style('background-image', 'url(' + src + ')')
-  })
+      d3.select('#image a')
+        .attr('href', item.data.url)
+        .style('background-image', 'url(' + src + ')')
+      })
+    .catch(function (err) {
+      console.error(err.message)
+    })
 }
 
 function submit() {
+  if (!item || !item.id) {
+    return
+  }
+
+  var data
   var toponym = titleElement.value
     .substring(titleElement.selectionStart, titleElement.selectionEnd).trim()
 
-  var url = `${API_URL}items/${item.organization.id}/${item.id}`
-  var skipped = (toponym.length === 0)
-
-  var body = {
-    taskId: TASK_ID
-  }
-
-  if (skipped) {
-    body.skipped = true
-  } else {
-    body.data = {
+  if (toponym.length) {
+    data = {
       toponym: toponym
     }
   }
 
-  postJSON(url, body, (err, results) => {
-    if (err) {
-      setError(err)
-    } else {
+  brickByBrick.postSubmission(item.organization.id, item.id, data)
+    .then(function () {
       loadItem()
-    }
-  })
+    })
+    .catch(function (err) {
+      console.error(err.message)
+    })
 }
 
 loadItem()

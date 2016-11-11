@@ -1,3 +1,5 @@
+---
+---
 <!doctype html>
 <html lang="en">
   <head>
@@ -5,30 +7,42 @@
     <title>Select Landmark - NYC Space/Time Directory</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
-    <script src="js/d3.v4.min.js"></script>
+
+    <link rel="stylesheet" href="{{ site.brick-by-brick-js }}style.css">
+    <script src="{{ site.brick-by-brick-js }}fetch.js"></script>
+    <script src="{{ site.brick-by-brick-js }}promise.min.js"></script>
+    <script src="{{ site.brick-by-brick-js }}d3.v4.min.js"></script>
+    <script src="{{ site.brick-by-brick-js }}brick-by-brick.js"></script>
   </head>
   <body>
+    <div id="oauth">
+    </div>
     <h1>🏛 Select Landmark 🏛</h1>
+    <div class="center text">
+      From the titles of items from <a href="http://digitalcollections.nypl.org/">Digital Collections</a> to toponyms
+    </div>
     <div class="center error" id="error"></div>
-    <form id="form" spellcheck="false">
-      <input id="title" type="text" tabindex="0"></input>
-      <input id="submit" type="submit" />
-    </form>
-    <div id="image">
-      <a target="_blank">
-      </a>
-    </div>
-    <div class="text">
-      Select portion of the title that mentions a single landmark or place name depicted in the image,
-      and press enter or click submit.
-      Leave the selection empty when the title does not include a landmark name,
-      when the image does not depict the landmark mentioned in the title, or when you're unsure.
+    <article class="hidden">
+      <form id="form" spellcheck="false">
+        <input id="title" type="text" tabindex="0"></input>
+        <input id="submit" type="submit" />
+      </form>
+      <div id="image">
+        <a target="_blank">
+        </a>
+      </div>
+      <div class="text">
+        Select portion of the title that mentions a single landmark or place name depicted in the image,
+        and press enter or click submit.
+        Leave the selection empty when the title does not include a landmark name,
+        when the image does not depict the landmark mentioned in the title, or when you're unsure.
 
-      Sometimes, selecting the landmark is quite subjective; the following examples will give you
-      an idea what we consider a landmark name (landmarks are in <span class="selected">yellow</span>):
-      <ul id="examples">
-      </ul>
-    </div>
+        Sometimes, selecting the landmark is quite subjective; the following examples will give you
+        an idea what we consider a landmark name (landmarks are in <span class="selected">yellow</span>):
+        <ul id="examples">
+        </ul>
+      </div>
+    <article>
     <script src="js/script.js"></script>
   </body>
 </html>

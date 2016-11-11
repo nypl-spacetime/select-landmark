@@ -34,6 +34,15 @@ form {
   display: flex;
 }
 
+.hidden {
+  display: none;
+}
+
+#oauth {
+  text-align: center;
+  padding: 1em;
+}
+
 .text {
   margin: 1em 0;
   /*font-size: 60%;*/
@@ -41,7 +50,7 @@ form {
 
 #error span {
   background-color: rgba(255, 30, 30, 0.9);
-  padding: 0.4em;
+  padding: 1em;
   border-radius: 5px;
   margin: 1em;
   display: block;
