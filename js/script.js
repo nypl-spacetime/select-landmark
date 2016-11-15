@@ -91,24 +91,7 @@ titleElement.addEventListener('keydown', function (event) {
   }
 })
 
-function setError(err) {
-  var message
-
-  if (err) {
-    if (err.status === 404) {
-      message = 'Done! Finished! Nothing to do!'
-    } else {
-      message = err.message
-    }
-  } else {
-    message = 'Error getting task from server'
-  }
-
-  d3.select('#error > *').remove()
-  d3.select('#error').append('span').html(message)
-}
-
-function loadItem() {
+function getItem() {
   titleElement.focus()
   // TODO: clear selection!
 
@@ -151,14 +134,14 @@ function submit() {
 
   brickByBrick.postSubmission(item.organization.id, item.id, data)
     .then(function () {
-      loadItem()
+      getItem()
     })
     .catch(function (err) {
       console.error(err.message)
     })
 }
 
-loadItem()
+getItem()
 
 d3.select('#examples').selectAll('li').data(examples)
   .enter().append('li')
